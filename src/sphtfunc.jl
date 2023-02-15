@@ -530,6 +530,49 @@ function adjoint_alm2map!(
     )
 end
 
+# create a new set of spin-0 maps and project the coefficients to the map
+function adjoint_alm2map(alm::Alm{ComplexF64,Array{ComplexF64,1}}, nside::Integer)
+    npix = nside2npix(nside)
+    map = HealpixMap{Float64,RingOrder}(zeros(Float64, npix))
+    adjoint_alm2map!(alm, map)
+    return map
+end
+
+# create a new set of IQU maps and project the coefficients to the map
+function adjoint_alm2map(alm::Array{Alm{ComplexF64,Array{ComplexF64,1}},1}, nside::Integer)
+    npix = nside2npix(nside)
+    map = PolarizedHealpixMap{Float64,RingOrder}(
+        zeros(Float64, npix),
+        zeros(Float64, npix),
+        zeros(Float64, npix),
+    )
+    adjoint_alm2map!(alm, map)
+    return map
+end
+
+# convert to ComplexF64 Alm for spin-0 if passed some other type
+function adjoint_alm2map(alm::Alm{T}, nside::Integer) where {T}
+    alm_float = Alm{ComplexF64,Array{ComplexF64,1}}(
+        alm.lmax,
+        alm.mmax,
+        convert(Array{ComplexF64,1}, alm.alm),
+    )
+    return adjoint_alm2map(alm_float, nside)
+end
+
+# convert to ComplexF64 Alm for TEB if passed some other type
+function adjoint_alm2map(
+    alms::Array{Alm{Complex{T},Array{Complex{T},1}},1},
+    nside::Integer,
+) where {T <: Real}
+    lmax = alms[1].lmax
+    mmax = alms[1].mmax
+    alm_t = Alm(lmax, mmax, convert(Array{ComplexF64,1}, alms[1].alm))
+    alm_e = Alm(lmax, mmax, convert(Array{ComplexF64,1}, alms[2].alm))
+    alm_b = Alm(lmax, mmax, convert(Array{ComplexF64,1}, alms[3].alm))
+    return adjoint_alm2map([alm_t, alm_e, alm_b], nside)
+end
+
 ###########################################################################
 
 
