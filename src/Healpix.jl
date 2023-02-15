@@ -65,5 +65,6 @@ include("cl.jl")
 include("sphtfunc.jl")
 include("mapmaking.jl")
 include("query.jl")
+include("chainrules.jl")
 
 end
