@@ -484,12 +484,8 @@ end
     Perform the element-wise product of an `Alm` object by a constant in a_ℓm space.
 """
 function *(alm₁::Alm{Complex{T}}, c::Number) where {T <: Number}
-    res_alm = Alm(alm₁.lmax, alm₁.mmax, Vector{Complex{T}}(undef, length(alm₁.alm)))
-
-    @inbounds for i in eachindex(alm₁)
-        res_alm.alm[i] = alm₁.alm[i] * c
-    end
-    res_alm
+    res_alm = Alm(alm₁.lmax, alm₁.mmax, alm₁.alm .* c)
+    return res_alm
 end
 
 """ /(alm₁::Alm{Complex{T}}, alm₂::Alm{Complex{T}}) where {T <: Number}
