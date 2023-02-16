@@ -35,6 +35,7 @@ import CFITSIO
 import Libsharp
 import Base: getindex, setindex!
 import ChainRulesCore
+import Zygote: @adjoint
 
 """
 A constant commonly used by Healpix libraries to mark «missing» pixels.

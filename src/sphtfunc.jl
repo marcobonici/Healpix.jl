@@ -534,7 +534,7 @@ end
 function adjoint_alm2map(map::HealpixMap{T,RingOrder}, lmax::Integer, mmax::Integer) where {T}
     alm = Alm{Complex{T}}(lmax, mmax)
     adjoint_alm2map!(alm, map)
-    return map
+    return alm
 end
 
 # create a new set of IQU maps and project the coefficients to the map
