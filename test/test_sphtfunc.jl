@@ -35,7 +35,7 @@ test_alm_spin0 = [
 ## spin-0 adjoint_alm2map
 W = 4*π/Healpix.nside2npix(nside)
 test_alm_spin0_adj = test_alm_spin0 ./ W
-Healpix.adjoint_alm2map!(map, alm)
+Healpix.adjoint_alm2map!(alm, map)
 @test isapprox(alm.alm, test_alm_spin0_adj)
 
 ## test type convert
@@ -128,7 +128,7 @@ test_map_spin0 = [
 ## spin-0 adjoint_map2alm
 W = 4*π/Healpix.nside2npix(nside)
 test_map_spin0_adj = test_map_spin0 .* W
-Healpix.adjoint_map2alm!(alm, map)
+Healpix.adjoint_map2alm!(map, alm)
 @test isapprox(map, test_map_spin0_adj)
 
 ## test type convert
@@ -169,7 +169,7 @@ test_alm_spin2 = [
 ## spin-2 adjoint_alm2map
 W = 4*π/Healpix.nside2npix(nside)
 test_alm_spin2_adj = test_alm_spin2 ./ W
-Healpix.adjoint_alm2map!(map, alms)
+Healpix.adjoint_alm2map!(alms, map)
 @test isapprox(alms[1].alm, test_alm_spin0_adj)
 @test isapprox(alms[2].alm, test_alm_spin2_adj)
 @test isapprox(alms[3].alm, test_alm_spin2_adj)
