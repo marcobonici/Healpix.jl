@@ -483,8 +483,8 @@ done in-place.
   coefficients to be written to.
 """
 function adjoint_alm2map!(
-    map::HealpixMap{Float64,RingOrder,Array{Float64,1}},
-    alm::Alm{ComplexF64,Array{ComplexF64,1}}
+    alm::Alm{ComplexF64,Array{ComplexF64,1}},
+    map::HealpixMap{Float64,RingOrder,Array{Float64,1}}
 )
     geom_info = Libsharp.make_healpix_geom_info(map.resolution.nside, 1)
     alm_info = Libsharp.make_triangular_alm_info(alm.lmax, alm.mmax, 1)
@@ -500,8 +500,8 @@ function adjoint_alm2map!(
 end
 
 function adjoint_alm2map!(
-    map::PolarizedHealpixMap{Float64,RingOrder,Array{Float64,1}},
-    alm::Array{Alm{ComplexF64,Array{ComplexF64,1}},1}
+    alm::Array{Alm{ComplexF64,Array{ComplexF64,1}},1},
+    map::PolarizedHealpixMap{Float64,RingOrder,Array{Float64,1}}
 )
     geom_info = Libsharp.make_healpix_geom_info(map.i.resolution.nside, 1)
     alm_info = Libsharp.make_triangular_alm_info(alm[1].lmax, alm[1].mmax, 1)
@@ -531,9 +531,8 @@ function adjoint_alm2map!(
 end
 
 # create a new set of spin-0 maps and project the coefficients to the map
-function adjoint_alm2map(alm::Alm{ComplexF64,Array{ComplexF64,1}}, nside::Integer)
-    npix = nside2npix(nside)
-    map = HealpixMap{Float64,RingOrder}(zeros(Float64, npix))
+function adjoint_alm2map(map::HealpixMap{T,RingOrder}, lmax::Integer, mmax::Integer) where {T}
+    alm = Alm{Complex{T}}(lmax, mmax)
     adjoint_alm2map!(alm, map)
     return map
 end
